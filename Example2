@@ -1,0 +1,24 @@
+import random
+
+particles = [random.uniform(0, 15) for _ in range(5)]
+velocity = [0]*5
+
+def fitness(x):
+    return abs(x - 7)
+
+pbest = particles[:]
+gbest = min(particles, key=fitness)
+
+for _ in range(10):
+    for i in range(5):
+        velocity[i] += random.random()*(pbest[i]-particles[i]) \
+                     + random.random()*(gbest-particles[i])
+        particles[i] += velocity[i]
+
+        if fitness(particles[i]) < fitness(pbest[i]):
+            pbest[i] = particles[i]
+
+    gbest = min(particles, key=fitness)
+
+print("Best value:", round(gbest, 4))
+print("Error:", round(fitness(gbest), 4))
